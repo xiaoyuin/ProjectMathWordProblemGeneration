@@ -6,10 +6,15 @@ class Postprocessor {
 
         fun process(question: String, solution: String, sentences: List<String>): MathWordProblem {
 
-            //TODO: Implement operations: corrects the grammar, adjusts the sentence order, recovers the subjects etc.
             val sentencesAfterOrdering = sentences.toMutableList()
 
+            val indexOfFirstSentenceWithNumber = sentences.indexOfFirst {
+                Sentence(it).nerTags().contains("NUMBER")
+            }
 
+            if (indexOfFirstSentenceWithNumber != -1) {
+                sentencesAfterOrdering.add(0, sentencesAfterOrdering.removeAt(indexOfFirstSentenceWithNumber))
+            }
 
             return MathWordProblem(sentencesAfterOrdering, question, solution)
         }
